@@ -22,6 +22,7 @@ import {
 } from "../ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
 const fromSchema = z.object({
   name: z.string().min(1, {
@@ -33,6 +34,12 @@ const fromSchema = z.object({
 });
 
 export const InitialModal = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const form = useForm({
     resolver: zodResolver(fromSchema),
     defaultValues: {
@@ -45,6 +52,8 @@ export const InitialModal = () => {
   const onSubmit = async (values: z.infer<typeof fromSchema>) => {
     console.log(values);
   };
+
+  if (!isMounted) return null;
 
   return (
     <Dialog open>
